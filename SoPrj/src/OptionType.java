@@ -1,20 +1,42 @@
 import java.util.ArrayList;
+import java.io.File;
 
 public class OptionType {
-    private String path;
-    private File file;
-    private String type;
+    private FileList fileList;
 
-    public OptionType(String path, File file, String type){
-        this.path = path;
-        this.file = file;
-        this.type = type;
+    public OptionType(FileList fileList){
+        this.fileList = fileList;
     }
 
+    /*
     public ArrayList<String> getResult(){
         return maxtype(this.file, this.path, this.type);
     }
-
+     */
+    public ArrayList<String> type2(String type){
+        if(!type.equals("d") && !type.equals("f")){ // invalid argument
+            return null;
+        }
+        ArrayList<String> tmp = new ArrayList<>();
+        if(type.equals("d")){
+            for(int i = 0; i < this.fileList.getSize(); i++){
+                File f = fileList.getFileList().get(i);
+                if(f.isDirectory()){
+                     tmp.add(f.getName());
+                }
+            }
+        }
+        else{
+            for(int i = 0; i < this.fileList.getSize(); i++){
+                File f = fileList.getFileList().get(i);
+                if(f.isFile()){
+                    tmp.add(f.getName());
+                }
+            }
+        }
+        return tmp;
+    }
+/*
     public ArrayList<String> maxtype(File file, String path, String type){
 
         if(!type.equals("d") && !type.equals("f")){ // invalid argument
@@ -38,5 +60,5 @@ public class OptionType {
 
         return tmp;
     }
-
+*/
 }

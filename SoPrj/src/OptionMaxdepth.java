@@ -1,18 +1,32 @@
 import java.util.ArrayList;
+import java.io.File;
 
 public class OptionMaxdepth {
-    private String path;
-    private File file;
-    private int depth;
+    private FileList fileList;
 
-    public OptionMaxdepth(String path, File file, int depth){
-        this.path = path;
-        this.file = file;
-        this.depth = depth;
+    public OptionMaxdepth(FileList fileList){
+        this.fileList = fileList;
+
     }
+    /*
     public ArrayList<String> getResult(){
-        return maxdepth(this.file, this.path, this.depth);
+        return maxdepth(this.fileList, this.path, this.depth);
     }
+     */
+    public ArrayList<String> maxdepth2(int depth){
+        if(depth < 0) { // invalid argument
+            System.out.println("depth must be zero or more");
+            return null;
+        }
+        ArrayList<String> tmp = new ArrayList<>();
+        for(int i = 0; i < this.fileList.getSize(); i++){
+            if(this.fileList.getDepthList().get(i) <= depth){
+                tmp.add(this.fileList.getFileList().get(i).getName());
+            }
+        }
+        return tmp;
+    }
+    /*
     public ArrayList<String> maxdepth(File file, String path, int depth){
 
         if(depth < 0){ // invalid argument
@@ -21,11 +35,11 @@ public class OptionMaxdepth {
         // valid argument below
         boolean ends = path.endsWith("/");
         ArrayList<String> tmp = new ArrayList<String>();
-        tmp.add(path);
+        tmp.add(file.getName());
         if(depth == 0){
             return tmp;
         }
-        for(File i : file.getChildren()){
+        for(File i : file.getFiles()){
             if(ends == true) {
                 tmp.addAll(maxdepth(i, path + i.getName(), depth - 1));
             }
@@ -35,5 +49,6 @@ public class OptionMaxdepth {
         }
         return tmp;
     }
+     */
 
 }
