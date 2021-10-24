@@ -14,6 +14,8 @@ public class FileList {
         this.root = new File(path);
         fileList = new ArrayList<File>();
         depthList = new ArrayList<Integer>();
+
+        makeList(this.root, 0);
     }
 
     // 파일 트리 순회 및 리스트 생성
@@ -26,25 +28,18 @@ public class FileList {
             depthList.add(level);
         }
 
-        String[] files = dir.list();
+        File[] files = dir.listFiles();
 
         for(int i = 0; i < files.length; i++)
         {
-            File tempFile = new File(files[i]);
-
-            fileList.add(tempFile);
+            fileList.add(files[i]);
             depthList.add(level + 1);
-            if(tempFile.isDirectory())
-                makeList(tempFile, level + 1);
+            if(files[i].isDirectory())
+                makeList(files[i], level + 1);
         }
 
         if(level == 0)
             result = new boolean[fileList.size()];
-    }
-
-    public File getRoot()
-    {
-        return this.root;
     }
 
     public int getSize()
