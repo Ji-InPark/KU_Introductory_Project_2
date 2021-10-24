@@ -3,11 +3,14 @@ package src;
 import com.sun.istack.internal.NotNull;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.List;
 
 public interface Option {
     @NotNull
-    ArrayList<File> analyze();
+    List<File> analyze();
 
     void checkArg() throws IllegalArgumentException;
+
+    @NotNull
+    String getSymbol();
 }

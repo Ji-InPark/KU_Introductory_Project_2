@@ -25,13 +25,25 @@ public class OptionTime implements Option{
         this.arg= arg;
         this.fileList= fileList;
 
+        //remove directories from fileList
+        Iterator<File> iterator= this.fileList.iterator();
+        while(iterator.hasNext()){
+            File file= iterator.next();
+            if(file.isDirectory()){
+                iterator.remove();
+            }
+        }
+
         checkArg();
+    }
+    public OptionTime(@NotNull String arg, @NotNull File rootDir){
+        this(arg, Utils.flatFiles(rootDir));
     }
 
     @NotNull
     @Override
-    public ArrayList<File> analyze() {
-        ArrayList<File> results= new ArrayList<>();
+    public List<File> analyze() {
+        List<File> results= new ArrayList<>();
         Calendar calendar= Calendar.getInstance();
         for(File file: fileList){
             calendar.setTimeInMillis(file.lastModified());
@@ -124,5 +136,10 @@ public class OptionTime implements Option{
         }
 
         this.standardDate= parseDate();
+    }
+
+    @Override
+    public String getSymbol() {
+        return "-mtime";
     }
 }
