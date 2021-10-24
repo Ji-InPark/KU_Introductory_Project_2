@@ -40,7 +40,7 @@ public class OptionTime implements Option{
                 results.add(file);
             }else if(target_symbol == SYMBOL_BEFORE && fileLastModifiedDate.before(standardDate)){
                 results.add(file);
-            }else if(target_symbol == 0 && fileLastModifiedDate.equals(standardDate)){
+            }else if(target_symbol == 0 && file.lastModified()/1000 == standardDate.getTime()/1000){
                 results.add(file);
             }
         }
