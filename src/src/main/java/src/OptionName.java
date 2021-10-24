@@ -29,7 +29,7 @@ public class OptionName {
         }
     }
 
-    private void checkCondition(char[] filename, char[] option)
+    private boolean checkCondition(char[] filename, char[] option)
     {
         int filenameLength = filename.length;
         int optionLength = option.length;
@@ -39,7 +39,7 @@ public class OptionName {
 
         while(filenameIndex < filenameLength && optionIndex < optionLength)
         {
-            if(filename[filenameIndex]==option[optionIndex])
+            if(filename[filenameIndex]==option[optionIndex] || option[optionIndex]=='?')
             {
                 filenameIndex++;
                 optionIndex++;
@@ -47,11 +47,24 @@ public class OptionName {
 
             else
             {
-                // *나 ?같은 특수 옵션 처리
+                if(option[optionIndex]=='*')
+                {
+                    while(option[optionIndex+1]=='*' || option[optionIndex+1]=='?')
+                        optionIndex++;
+
+                    while(option[optionIndex+1]!=filename[filenameIndex])
+                        filenameIndex++;
+                }
+
+                else
+                {
+                    return false;
+                }
             }
         }
 
         this.result.add(0, new String(filename));
+        return true;
     }
 
     public ArrayList<String> analyze()
