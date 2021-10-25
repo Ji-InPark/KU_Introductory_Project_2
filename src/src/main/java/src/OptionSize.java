@@ -1,72 +1,101 @@
 package src;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
+import java.util.List;
 
-public class OptionSize {
-
+public class OptionSize implements Option {
     FileList fileList;      // 순회된 file들을 저장하는 클래스
-    int NP, N, kMG;         // (NP: -1은 -, 0은 생략, 1은 +), N: 입력 숫자, (kMG: 1은 k, 2는 M, 3은 G)
 
+    private char[] UNITS = {'B', 'M', 'k', 'G'};
 
-    public OptionSize(FileList fileList)
-    {
+    private String arg;
+
+    private long fileLength = 0;
+    private char checkDirection = 0;
+
+    public OptionSize(FileList fileList, String arg) {
         this.fileList = fileList;
+        this.arg = arg;
+
+        this.checkArg();
     }
 
-    public void SetOption(int NP, int N, int kMG)
-    {
-        this.NP = NP;
-        this.N = N;
-        this.kMG = kMG;
+
+    @Override
+    public List<File> analyze() {
+        for (int i = 0; i < fileList.getSize(); i++) {
+            File file = fileList.getFile(i);
+            if(checkDirection== '-'){
+                if (file.length() < fileLength) {
+                    fileList.setResult(i, true);
+                } else {
+                    fileList.setResult(i, false);
+                }
+            }else if(checkDirection== 0){
+                if (file.length() == fileLength) {
+                    fileList.setResult(i, true);
+                } else {
+                    fileList.setResult(i, false);
+                }
+            }else if(checkDirection== '+'){
+                if (file.length() > fileLength) {
+                    fileList.setResult(i, true);
+                } else {
+                    fileList.setResult(i, false);
+                }
+            }
+        }
+
+        return fileList.getTargetFileList();
     }
 
-    public void Analyze() throws IOException {
-        if(NP == -1)        // N보다 작은 것 탐색
-        {
-            for(int i = 0; i < fileList.getSize(); i++)        // 여기서 fileList는 순회가 끝난 파일들의 어래이리스트
-            {
-                File file = fileList.getFile(i);
-                if(Files.size(file.toPath()) < NP * Math.pow(1024, kMG))
-                {
-                    fileList.setResult(i, true);              // 여기서 setFind(index, boolean)는 해당 파일이 조건에 충족하는지(true, false)를 알려줌 (fileList 클래스에 boolean ArrayList 혹은 Array 가 있음)
-                }
-                else
-                {
-                    fileList.setResult(i, false);
+    @Override
+    public void checkArg() throws IllegalArgumentException {
+        String arg = this.arg;
+        if (arg.charAt(0) == '+' || arg.charAt(0) == '-') {
+            checkDirection = arg.charAt(0);
+            arg = arg.substring(1);
+        }
+
+        char unit = arg.charAt(arg.length() - 1);
+        if (unit >= 'A' && unit <= 'z') {
+            boolean validUnit = false;
+            for (int i = 0; i < UNITS.length; i++) {
+                if (UNITS[i] == unit) {
+                    validUnit = true;
+                    break;
                 }
             }
+            arg = arg.substring(0, arg.length() - 1);
+
+            if (!validUnit)
+                throw new IllegalArgumentException("올바른 Size 단위가 아닙니다");
+        } else {
+            unit = 'B';
         }
-        else if(NP == 0)    // N과 정확히 같은 것 탐색
-        {
-            for(int i = 0; i < fileList.getSize(); i++)        // 여기서 fileList는 순회가 끝난 파일들의 어래이리스트
-            {
-                File file = fileList.getFile(i);
-                if(Files.size(file.toPath()) == NP * Math.pow(1024, kMG))
-                {
-                    fileList.setResult(i, true);              // 여기서 setFind(index, boolean)는 해당 파일이 조건에 충족하는지(true, false)를 알려줌 (fileList 클래스에 boolean ArrayList 혹은 Array 가 있음)
-                }
-                else
-                {
-                    fileList.setResult(i, false);
-                }
+
+
+        try {
+            fileLength = Integer.parseInt(arg);
+            switch (unit) {
+                case 'k':
+                    fileLength *= 1024;
+                    break;
+                case 'M':
+                    fileLength *= 1024 * 1024;
+                    break;
+                case 'G':
+                    fileLength *= 1024 * 1024 * 1024;
+                    break;
             }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException("올바른 Size값이 아닙니다");
         }
-        else                // N보다 큰 것 탐색
-        {
-            for(int i = 0; i < fileList.getSize(); i++)        // 여기서 fileList는 순회가 끝난 파일들의 어래이리스트
-            {
-                File file = fileList.getFile(i);
-                if(Files.size(file.toPath()) > NP * Math.pow(1024, kMG))
-                {
-                    fileList.setResult(i, true);              // 여기서 setFind(index, boolean)는 해당 파일이 조건에 충족하는지(true, false)를 알려줌 (fileList 클래스에 boolean ArrayList 혹은 Array 가 있음)
-                }
-                else
-                {
-                    fileList.setResult(i, false);
-                }
-            }
-        }
+    }
+
+    @Override
+    public String getSymbol() {
+        return "size";
     }
 }
