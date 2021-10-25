@@ -10,6 +10,7 @@ public class OptionName {
     public OptionName(String[] fileList)
     {
         this.fileList=fileList;
+        this.result = new ArrayList<String>();
     }
 
     public void setOption(String option)
@@ -37,7 +38,7 @@ public class OptionName {
         int filenameIndex = 0;
         int optionIndex = 0;
 
-        while(filenameIndex < filenameLength && optionIndex < optionLength)
+        while(filenameIndex < (filenameLength-1) && optionIndex < (optionLength-1))
         {
             if(filename[filenameIndex]==option[optionIndex] || option[optionIndex]=='?')
             {
@@ -49,11 +50,14 @@ public class OptionName {
             {
                 if(option[optionIndex]=='*')
                 {
-                    while(option[optionIndex+1]=='*' || option[optionIndex+1]=='?')
+                    while((optionIndex+1)<option.length && (option[optionIndex+1]=='*' || option[optionIndex+1]=='?'))
                         optionIndex++;
 
-                    while(option[optionIndex+1]!=filename[filenameIndex])
+                    while((optionIndex+1)<option.length && (filenameIndex+1)<filename.length && option[optionIndex+1]!=filename[filenameIndex])
+                    {
                         filenameIndex++;
+                    }
+                    optionIndex++;
                 }
 
                 else
@@ -63,8 +67,16 @@ public class OptionName {
             }
         }
 
-        this.result.add(0, new String(filename));
-        return true;
+        if(optionIndex == (optionLength-1))
+        {
+            System.out.println(optionIndex);
+            System.out.println(filenameIndex);
+            System.out.println(new String(filename));
+            this.result.add(0, new String(filename));
+            return true;
+        }
+
+        return false;
     }
 
     public ArrayList<String> analyze()
