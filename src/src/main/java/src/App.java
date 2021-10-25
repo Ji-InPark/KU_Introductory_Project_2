@@ -6,9 +6,11 @@ import java.util.*;
 
 public class App {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
         try {
-            String cmd = scanner.nextLine();
+            String cmd = "";
+            for(int i=0;i<args.length;i++){
+                cmd+= args[i]+ " ";
+            }
 
             StringTokenizer cmdTokenizer = new StringTokenizer(cmd, " ", false);
 

@@ -17,7 +17,7 @@ public class OptionMaxdepth implements Option {
 
     @Override
     public List<File> analyze(){
-        ArrayList<File> result = maxdepth(this.root, this.depth+1);
+        ArrayList<File> result = maxdepth(this.root, this.depth);
         return result;
     }
 

@@ -14,6 +14,7 @@ public class Utils {
         List<File> files= new ArrayList<>();
         if(path.isDirectory()){
             for(File child: path.listFiles()){
+                files.add(child);
                 files.addAll(flatFiles(child));
             }
         }else{
