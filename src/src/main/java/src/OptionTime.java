@@ -1,7 +1,5 @@
 package src;
 
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
 
 import java.io.File;
 import java.text.ParseException;
@@ -22,10 +20,9 @@ public class OptionTime implements Option {
 
     private Date standardDate = null;
 
-    @Nullable
     private FileList _fileList;
 
-    public OptionTime(@NotNull String arg, @NotNull List<File> fileList) {
+    public OptionTime( String arg,  List<File> fileList) {
         this.arg = arg;
         this.fileList = fileList;
 
@@ -41,16 +38,16 @@ public class OptionTime implements Option {
         checkArg();
     }
 
-    public OptionTime(@NotNull String arg, @NotNull File rootDir) {
+    public OptionTime( String arg,  File rootDir) {
         this(arg, Utils.flatFiles(rootDir));
     }
 
-    public OptionTime(@NotNull String arg, @NotNull FileList fileList) {
+    public OptionTime( String arg,  FileList fileList) {
         this(arg, fileList.getTargetFileList());
         this._fileList = fileList;
     }
 
-    @NotNull
+
     @Override
     public List<File> analyze() {
         List<File> results = new ArrayList<>();
@@ -133,8 +130,8 @@ public class OptionTime implements Option {
         throw new IllegalArgumentException(String.format("허용서식: hhmmss, hhmm, hh. (입력값: %s)", arg_hhmmss));
     }
 
-    @NotNull
-    private String getDateString(@NotNull String format) {
+
+    private String getDateString( String format) {
         Date currentDate = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat(format);
 
