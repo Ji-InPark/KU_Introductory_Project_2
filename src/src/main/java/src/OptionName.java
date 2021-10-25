@@ -34,7 +34,7 @@ public class OptionName {
     {
         int lenS = s.length();
         int lenP = p.length();
-        //initialization
+        
         boolean[][] dp = new boolean[lenS + 1][lenP + 1];
         for (int j = 1 ; j <= lenP && p.charAt(j - 1) == '*' ; j++)
             dp[0][j] = true;
@@ -43,16 +43,16 @@ public class OptionName {
             for (int j = 1 ; j <= lenP ; j ++) {
                 char charS = s.charAt(i - 1);
                 char charP = p.charAt(j - 1);
-                //If char is a letter
+                
                 if (charP!='?'&&charP!='*') {
                     if (charS == charP) dp[i][j] = dp[i - 1][j - 1];
                     continue;
                 }
-                //Is char? Time
+                
                 if (charP == '?')  dp[i][j] = dp[i - 1][j - 1];
-                //When char is *
+                
                 if (charP == '*') {
-                    //Does the j - 1 bit of p exist
+                    
                     if (j - 2 < 0) dp[i][j] = true;
                     else {
                         dp[i][j] = dp[i][j] || dp[i][j - 1];
