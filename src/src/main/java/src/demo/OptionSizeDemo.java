@@ -1,14 +1,17 @@
 package src.demo;
 
+import java.util.List;
 import src.FileList;
 import src.OptionSize;
 import src.Utils;
 
+import java.io.File;
+
 public class OptionSizeDemo {
     public static void main(String[] args){
-        FileList mFileList= new FileList(".");
+        List<File> fileList= Utils.flatFiles(new File("."));
 
-        OptionSize optionSize= new OptionSize(mFileList, "-1000B");
+        OptionSize optionSize= new OptionSize(fileList, "-1000B");
         Utils.printResult(optionSize.analyze());
     }
 }

@@ -1,11 +1,10 @@
 package src;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OptionSize implements Option {
-    FileList fileList;      // 순회된 file들을 저장하는 클래스
-
     private char[] UNITS = {'B', 'M', 'k', 'G'};
 
     private String arg;
@@ -13,7 +12,9 @@ public class OptionSize implements Option {
     private long fileLength = 0;
     private char checkDirection = 0;
 
-    public OptionSize(FileList fileList, String arg) {
+    private List<File> fileList;
+
+    public OptionSize(List<File> fileList, String arg) {
         this.fileList = fileList;
         this.arg = arg;
 
@@ -23,30 +24,23 @@ public class OptionSize implements Option {
 
     @Override
     public List<File> analyze() {
-        for (int i = 0; i < fileList.getSize(); i++) {
-            File file = fileList.getFile(i);
+        List<File> results= new ArrayList<>();
+        for(File file: fileList){
             if(checkDirection== '-'){
                 if (file.length() < fileLength) {
-                    fileList.setResult(i, true);
-                } else {
-                    fileList.setResult(i, false);
+                    results.add(file);
                 }
             }else if(checkDirection== 0){
                 if (file.length() == fileLength) {
-                    fileList.setResult(i, true);
-                } else {
-                    fileList.setResult(i, false);
+                    results.add(file);
                 }
             }else if(checkDirection== '+'){
                 if (file.length() > fileLength) {
-                    fileList.setResult(i, true);
-                } else {
-                    fileList.setResult(i, false);
+                    results.add(file);
                 }
             }
         }
-
-        return fileList.getTargetFileList();
+        return results;
     }
 
     @Override
