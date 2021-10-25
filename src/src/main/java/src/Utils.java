@@ -13,8 +13,8 @@ public class Utils {
     public static List<File> flatFiles(File path){
         List<File> files= new ArrayList<>();
         if(path.isDirectory()){
+            files.add(path);
             for(File child: path.listFiles()){
-                files.add(child);
                 files.addAll(flatFiles(child));
             }
         }else{
@@ -31,7 +31,7 @@ public class Utils {
         int cnt= 1;
         System.out.println("찾은 파일 수: "+ fileList.size());
         for(File file: fileList){
-            System.out.println(cnt + "\t"+ file.getName());
+            System.out.println(cnt + "\t"+ file.getPath());
 
 //            SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 //            Calendar calendar= Calendar.getInstance();
