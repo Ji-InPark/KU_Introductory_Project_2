@@ -22,6 +22,11 @@ public class Utils {
         return files;
     }
     public static void printResult(List<File> fileList){
+        if(fileList.isEmpty()){
+            System.out.println("일치하는 파일이 없습니다");
+            return;
+        }
+
         int cnt= 1;
         System.out.println("찾은 파일 수: "+ fileList.size());
         for(File file: fileList){
