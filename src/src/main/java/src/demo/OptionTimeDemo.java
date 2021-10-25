@@ -11,7 +11,7 @@ public class OptionTimeDemo {
     public static void main(String[] args){
         FileList mFileList= new FileList(".");
 
-        OptionTime optionTime= new OptionTime("+1025T223030", mFileList);
+        OptionTime optionTime= new OptionTime("+20211001T", mFileList);
         List<File> resultFiles= optionTime.analyze();
 
         Utils.printResult(resultFiles);
