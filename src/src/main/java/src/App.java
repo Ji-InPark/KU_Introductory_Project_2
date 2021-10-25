@@ -61,7 +61,7 @@ public class App {
                             options.add(new OptionSize(allFiles, arg));
                             break;
                         case "-name":
-//                            options.add(new OptionSize(name, arg));
+                            options.add(new OptionName(allFiles, arg));
                             break;
                         case "-type":
                             options.add(new OptionType(allFiles, arg));

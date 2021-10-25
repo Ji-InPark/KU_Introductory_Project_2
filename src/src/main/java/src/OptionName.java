@@ -1,22 +1,20 @@
 package src;
 
+import java.util.List;
+
+import java.io.File;
 import java.util.ArrayList;
 
-public class OptionName {
-    ArrayList<String> result;
-    String[] fileList;
+public class OptionName implements Option{
+    List<File> fileList;
     String option;
 
-    public OptionName(String[] fileList)
+    public OptionName(List<File> fileList, String arg)
     {
+        this.option=arg;
         this.fileList=fileList;
-        this.result = new ArrayList<String>();
     }
 
-    public void setOption(String option)
-    {
-        this.option=option;
-    }
 
     private void validateOption(){
         // \ / : * ? " < > |
@@ -34,6 +32,9 @@ public class OptionName {
     {
         int lenS = s.length();
         int lenP = p.length();
+
+        while(p.indexOf("**")>-1)
+            p = p.replaceAll("**", "*");
         
         boolean[][] dp = new boolean[lenS + 1][lenP + 1];
         for (int j = 1 ; j <= lenP && p.charAt(j - 1) == '*' ; j++)
@@ -67,67 +68,29 @@ public class OptionName {
         return dp[lenS][lenP];
     }
 
-    /*private boolean checkCondition(char[] filename, char[] option)
+    public List<File> analyze()
     {
-        int filenameLength = filename.length;
-        int optionLength = option.length;
+        ArrayList<File> results= new ArrayList<>();
 
-        int filenameIndex = 0;
-        int optionIndex = 0;
-
-        while(filenameIndex < (filenameLength-1) && optionIndex < (optionLength-1))
-        {
-            if(filename[filenameIndex]==option[optionIndex] || option[optionIndex]=='?')
-            {
-                filenameIndex++;
-                optionIndex++;
-            }
-
-            else
-            {
-                if(option[optionIndex]=='*')
-                {
-                    while((optionIndex+1)<option.length && (option[optionIndex+1]=='*' || option[optionIndex+1]=='?'))
-                        optionIndex++;
-
-                    while((optionIndex+1)<option.length && (filenameIndex+1)<filename.length && option[optionIndex+1]!=filename[filenameIndex])
-                    {
-                        filenameIndex++;
-                    }
-                    optionIndex++;
-                }
-
-                else
-                {
-                    return false;
-                }
-            }
-        }
-
-        if(optionIndex == (optionLength-1) && (filenameIndex == (filenameLength-1)))
-        {
-            System.out.println(optionIndex);
-            System.out.println(filenameIndex);
-            System.out.println(new String(filename));
-            this.result.add(0, new String(filename));
-            return true;
-        }
-
-        return false;
-    }*/
-
-    public ArrayList<String> analyze()
-    {
-        int fileCount = this.fileList.length;
+        int fileCount = this.fileList.size();
         int fileIndex = 0;
         validateOption();   // 검사를 하기에 앞서서 option의 값이 유효한지 체크
 
         for(fileIndex=0;fileIndex<fileCount;fileIndex++)
         {
-            if(checkCondition(this.fileList[fileIndex], this.option))
-                System.out.println(this.fileList[fileIndex]);
+            if(checkCondition(this.fileList.get(fileIndex).getName(), this.option))
+                results.add(this.fileList.get(fileIndex));
         }
 
-        return this.result;
+        return results;
+    }
+
+    @Override
+    public void checkArg() throws IllegalArgumentException {
+    }
+
+    @Override
+    public String getSymbol() {
+        return null;
     }
 }
