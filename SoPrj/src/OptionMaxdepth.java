@@ -13,7 +13,7 @@ public class OptionMaxdepth {
         return maxdepth(this.fileList, this.path, this.depth);
     }
      */
-    public ArrayList<String> maxdepth2(int depth){
+    public ArrayList<String> maxdepth(int depth){
         if(depth < 0) { // invalid argument
             System.out.println("depth must be zero or more");
             return null;
@@ -21,7 +21,7 @@ public class OptionMaxdepth {
         ArrayList<String> tmp = new ArrayList<>();
         for(int i = 0; i < this.fileList.getSize(); i++){
             if(this.fileList.getDepthList().get(i) <= depth){
-                tmp.add(this.fileList.getFileList().get(i).getName());
+                tmp.add(this.fileList.getFileList().get(i).getPath());
             }
         }
         return tmp;

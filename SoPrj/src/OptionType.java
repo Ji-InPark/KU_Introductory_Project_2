@@ -13,24 +13,24 @@ public class OptionType {
         return maxtype(this.file, this.path, this.type);
     }
      */
-    public ArrayList<String> type2(String type){
+    public ArrayList<String> type(String type){
         if(!type.equals("d") && !type.equals("f")){ // invalid argument
             return null;
         }
         ArrayList<String> tmp = new ArrayList<>();
         if(type.equals("d")){
             for(int i = 0; i < this.fileList.getSize(); i++){
-                File f = fileList.getFileList().get(i);
+                File f = this.fileList.getFileList().get(i);
                 if(f.isDirectory()){
-                     tmp.add(f.getName());
+                     tmp.add(f.getPath());
                 }
             }
         }
         else{
             for(int i = 0; i < this.fileList.getSize(); i++){
-                File f = fileList.getFileList().get(i);
+                File f = this.fileList.getFileList().get(i);
                 if(f.isFile()){
-                    tmp.add(f.getName());
+                    tmp.add(f.getPath());
                 }
             }
         }

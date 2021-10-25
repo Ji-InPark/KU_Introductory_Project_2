@@ -26,9 +26,9 @@ public class Cfind {
         OptionType options3 = new OptionType(fileList);
         OptionType options4 = new OptionType(fileList);
         System.out.println("test1");
-        printArrayList(options1.maxdepth2(2));
+        printArrayList(options1.maxdepth(2));
         System.out.println("test2");
-        printArrayList(options2.maxdepth2(3));
+        printArrayList(options2.maxdepth(3));
 
         /*
         Result is as follows:
@@ -51,10 +51,10 @@ public class Cfind {
         */
         System.out.println("\n\n");
         System.out.println("test3");
-        printArrayList(options3.type2("d"));
+        printArrayList(options3.type("d"));
         // -> $ ./cfind / -type d (starts from root)
         System.out.println("test4");
-        printArrayList(options4.type2("f"));
+        printArrayList(options4.type("f"));
         // -> $ ./cfind . -type f (starts from /1_1)
 
         /*
