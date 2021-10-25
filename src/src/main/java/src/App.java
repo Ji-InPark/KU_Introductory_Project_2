@@ -17,9 +17,9 @@ public class App
 {
     public static void main( String[] args )
     {
-        String[] testfiles = new String[]{"test", "ㄴㅁㅇ러ㅏ마닐엄니ㅏㄹ전기프나ㅓ리ㅏㅁ나ㅓ리ㅏㅁ넝ㄹ", "2021 전기프 에이분만 굿아아아아팀", "asdfrhenohn.pdf", "test.pdf"};
+        String[] testfiles = new String[]{"test", "gpgpgpgpggp전기프", "ㄴㅁㅇ러ㅏ마닐엄니ㅏㄹ전기프나ㅓ리ㅏㅁ나ㅓ리ㅏㅁ넝ㄹ", "2021 전기프 에이분만 굿아아아아팀", "asdfrhenohn.pdf", "test.pdf"};
         OptionName testName = new OptionName(testfiles);
-        testName.setOption("*전기프");
+        testName.setOption("*전기프*");
         testName.analyze();
         System.out.println("the end");
     }

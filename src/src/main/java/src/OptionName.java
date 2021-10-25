@@ -30,7 +30,44 @@ public class OptionName {
         }
     }
 
-    private boolean checkCondition(char[] filename, char[] option)
+    private boolean checkCondition(String s, String p)
+    {
+        int lenS = s.length();
+        int lenP = p.length();
+        //initialization
+        boolean[][] dp = new boolean[lenS + 1][lenP + 1];
+        for (int j = 1 ; j <= lenP && p.charAt(j - 1) == '*' ; j++)
+            dp[0][j] = true;
+        dp[0][0] = true;
+        for (int i = 1 ; i <= lenS ; i ++) {
+            for (int j = 1 ; j <= lenP ; j ++) {
+                char charS = s.charAt(i - 1);
+                char charP = p.charAt(j - 1);
+                //If char is a letter
+                if (charP!='?'&&charP!='*') {
+                    if (charS == charP) dp[i][j] = dp[i - 1][j - 1];
+                    continue;
+                }
+                //Is char? Time
+                if (charP == '?')  dp[i][j] = dp[i - 1][j - 1];
+                //When char is *
+                if (charP == '*') {
+                    //Does the j - 1 bit of p exist
+                    if (j - 2 < 0) dp[i][j] = true;
+                    else {
+                        dp[i][j] = dp[i][j] || dp[i][j - 1];
+                        for (int m = 1 ; m < i ; m ++) {
+                            dp[i][j] = dp[i][j] || dp[m][j - 1];
+                            if (dp[i][j]) break;
+                        }
+                    }
+                }
+            }
+        }
+        return dp[lenS][lenP];
+    }
+
+    /*private boolean checkCondition(char[] filename, char[] option)
     {
         int filenameLength = filename.length;
         int optionLength = option.length;
@@ -67,7 +104,7 @@ public class OptionName {
             }
         }
 
-        if(optionIndex == (optionLength-1))
+        if(optionIndex == (optionLength-1) && (filenameIndex == (filenameLength-1)))
         {
             System.out.println(optionIndex);
             System.out.println(filenameIndex);
@@ -77,7 +114,7 @@ public class OptionName {
         }
 
         return false;
-    }
+    }*/
 
     public ArrayList<String> analyze()
     {
@@ -87,7 +124,8 @@ public class OptionName {
 
         for(fileIndex=0;fileIndex<fileCount;fileIndex++)
         {
-            checkCondition(this.fileList[fileIndex].toCharArray(), this.option.toCharArray());
+            if(checkCondition(this.fileList[fileIndex], this.option))
+                System.out.println(this.fileList[fileIndex]);
         }
 
         return this.result;
