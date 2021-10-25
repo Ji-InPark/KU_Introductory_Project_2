@@ -1,6 +1,7 @@
 package src;
 
 import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
 
 import java.io.File;
 import java.text.ParseException;
@@ -21,6 +22,9 @@ public class OptionTime implements Option{
 
     private Date standardDate= null;
 
+    @Nullable
+    private FileList _fileList;
+
     public OptionTime(@NotNull String arg, @NotNull List<File> fileList){
         this.arg= arg;
         this.fileList= fileList;
@@ -39,6 +43,10 @@ public class OptionTime implements Option{
     public OptionTime(@NotNull String arg, @NotNull File rootDir){
         this(arg, Utils.flatFiles(rootDir));
     }
+    public OptionTime(@NotNull String arg, @NotNull FileList fileList){
+        this(arg, fileList.getTargetFileList());
+        this._fileList= fileList;
+    }
 
     @NotNull
     @Override
@@ -54,9 +62,20 @@ public class OptionTime implements Option{
                 results.add(file);
             }else if(target_symbol == 0 && file.lastModified()/1000 == standardDate.getTime()/1000){
                 results.add(file);
+            }else{
+                offTargetFile(file);
             }
+
         }
         return results;
+    }
+    private void offTargetFile(File file){
+        if(this._fileList!= null){
+            int fileIndex= this._fileList.getFileIndex(file);
+            if(fileIndex!= -1){
+                this._fileList.setResult(fileIndex, false);
+            }
+        }
     }
 
     private Date parseDate() throws IllegalArgumentException {
