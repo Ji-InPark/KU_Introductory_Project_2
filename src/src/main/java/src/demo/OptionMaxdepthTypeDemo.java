@@ -1,4 +1,9 @@
-package src;
+package src.demo;
+
+import src.FileList;
+import src.HelpMsg;
+import src.OptionMaxdepth;
+import src.OptionType;
 
 import java.util.ArrayList;
 import java.io.File;
