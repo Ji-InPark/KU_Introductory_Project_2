@@ -64,4 +64,11 @@ public class FileList {
     {
         return result[index];
     }
+
+    public ArrayList<Integer> getDepthList(){
+        return depthList;
+    }
+    public ArrayList<File> getFileList(){
+        return fileList;
+    }
 }

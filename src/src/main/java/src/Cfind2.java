@@ -1,7 +1,9 @@
+package src;
+
 import java.util.ArrayList;
 import java.io.File;
 
-public class Cfind {
+public class Cfind2 {
     private FileList fileList;
     private ArrayList<File> result;
     public void filter(String path){
