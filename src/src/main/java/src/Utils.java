@@ -23,14 +23,15 @@ public class Utils {
     }
     public static void printResult(List<File> fileList){
         int cnt= 1;
+        System.out.println("찾은 파일 수: "+ fileList.size());
         for(File file: fileList){
             System.out.println(cnt + "\t"+ file.getName());
 
-            SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            Calendar calendar= Calendar.getInstance();
-            calendar.setTimeInMillis(file.lastModified());
-            Date date= calendar.getTime();
-            System.out.println("> "+ dateFormat.format(date));
+//            SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+//            Calendar calendar= Calendar.getInstance();
+//            calendar.setTimeInMillis(file.lastModified());
+//            Date date= calendar.getTime();
+//            System.out.println("> "+ dateFormat.format(date));
 
             cnt++;
         }
