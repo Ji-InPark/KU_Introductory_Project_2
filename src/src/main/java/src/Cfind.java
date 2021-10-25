@@ -1,4 +1,6 @@
-public class cfind {
+package src;
+
+public class Cfind {
 
     public void help()
     {
