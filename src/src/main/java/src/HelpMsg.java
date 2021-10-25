@@ -1,8 +1,8 @@
 package src;
 
-public class Cfind {
+public class HelpMsg {
 
-    public void help()
+    public void printMsg()
     {
         System.out.println("" +
                 "-size N[kMG] : 크기로 검색을 한다. [kMG] 는 다음과 같다.\n" +

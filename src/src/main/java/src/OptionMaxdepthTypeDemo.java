@@ -3,7 +3,7 @@ package src;
 import java.util.ArrayList;
 import java.io.File;
 
-public class Cfind2 {
+public class OptionMaxdepthTypeDemo {
     private FileList fileList;
     private ArrayList<File> result;
     public void filter(String path){
@@ -19,7 +19,7 @@ public class Cfind2 {
     }
 
     public static void main(String[] args){
-        Cfind cfind = new Cfind();
+        HelpMsg helpMsg = new HelpMsg();
         FileList fileList = new FileList(".");
         // it will be the args[0]
 
