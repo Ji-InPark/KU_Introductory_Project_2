@@ -1,8 +1,11 @@
 package src;
 
 
+import com.sun.istack.internal.Nullable;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -41,8 +44,10 @@ public class FileList {
                 makeList(files[i], level + 1);
         }
 
-        if(level == 0)
+        if(level == 0){
             result = new boolean[fileList.size()];
+            Arrays.fill(result, true);
+        }
     }
 
     public int getSize()
@@ -53,6 +58,15 @@ public class FileList {
     public File getFile(int index)
     {
         return fileList.get(index);
+    }
+
+    public int getFileIndex(File file){
+        for(int i=0; i< fileList.size(); i++){
+            if(fileList.get(i)== file){
+                return i;
+            }
+        }
+        return -1;
     }
 
     public void setResult(int index, boolean possible)
@@ -70,5 +84,15 @@ public class FileList {
     }
     public ArrayList<File> getFileList(){
         return fileList;
+    }
+
+    public ArrayList<File> getTargetFileList(){
+        ArrayList<File> targetFiles= new ArrayList<>();
+        for(int i=0; i< fileList.size(); i++){
+            if(result[i]){
+                targetFiles.add(fileList.get(i));
+            }
+        }
+        return targetFiles;
     }
 }

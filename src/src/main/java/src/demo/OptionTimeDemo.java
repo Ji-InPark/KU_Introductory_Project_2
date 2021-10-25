@@ -1,5 +1,6 @@
 package src.demo;
 
+import src.FileList;
 import src.OptionTime;
 import src.Utils;
 
@@ -8,10 +9,9 @@ import java.util.*;
 
 public class OptionTimeDemo {
     public static void main(String[] args){
+        FileList mFileList= new FileList(".");
 
-        File targetPath= new File("/Users/namgung-geon/Downloads");
-
-        OptionTime optionTime= new OptionTime("+1020T000000", targetPath);
+        OptionTime optionTime= new OptionTime("+1025T223030", mFileList);
         List<File> resultFiles= optionTime.analyze();
 
         Utils.printResult(resultFiles);
