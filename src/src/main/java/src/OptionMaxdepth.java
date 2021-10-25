@@ -1,29 +1,26 @@
 package src;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.io.File;
 
 public class OptionMaxdepth implements Option {
     private ArrayList<File> fileList;
+    private File root;
     int depth;
 
     public OptionMaxdepth(ArrayList<File> fileList, int depth){
         this.fileList = fileList;
         this.depth = depth;
-
+        this.root = fileList.get(0);
         checkArg();
     }
-    /*
-    public ArrayList<String> getResult(){
-        return maxdepth(this.fileList, this.path, this.depth);
-    }
-     */
 
     @Override
     public List<File> analyze(){
-        ArrayList<File> result;
-        result = maxdepth(this.fileList.get(0), this.depth);
+        ArrayList<File> result = maxdepth(this.root, this.depth);
         return result;
     }
 
@@ -39,32 +36,24 @@ public class OptionMaxdepth implements Option {
         return "-maxdepth";
     }
 
-    public ArrayList<File> maxdepth(File file, int tmp_depth){
 
+    public ArrayList<File> maxdepth(File file, int tmp_depth){
         ArrayList<File> tmp = new ArrayList<File>();
-        tmp.add(file);
+
+        if(file != null) {
+            tmp.add(file);
+        }
         if(tmp_depth == 0){
             return tmp;
         }
-        for(File f : fileList){
-            tmp.addAll(maxdepth(f, tmp_depth-1));
+        if(file.isDirectory()) {
+            for (File i : file.listFiles()) {
+                tmp.addAll(maxdepth(i, tmp_depth - 1));
+            }
         }
 
         return tmp;
     }
-    /*
-    public ArrayList<String> maxdepth(File file, int depth){
-        ArrayList<File> tmp = new ArrayList<File>();
-        tmp.add(file);
-        if(depth == 0){
-            return tmp;
-        }
-        for(File i : file.getFiles()){
-            tmp.addAll(maxdepth(i, depth - 1);
-        }
 
-        return tmp;
-    }
-     */
 
 }
