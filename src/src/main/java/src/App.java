@@ -54,6 +54,9 @@ public class App {
             while (splited.peek() != null) {
                 if (option == null) {
                     option = splited.poll();
+                    if(option.equals("-a")){
+                        option= null;
+                    }
                 } else if (arg == null) {
                     arg = splited.poll();
                     switch (option) {
