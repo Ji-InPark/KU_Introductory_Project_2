@@ -28,7 +28,7 @@ public class OptionMaxdepth implements Option {
     @Override
     public void checkArg() throws IllegalArgumentException {
         if(this.depth < 0){
-            throw new IllegalArgumentException("depth must be zero or more")
+            throw new IllegalArgumentException("depth must be zero or more");
         }
     }
 
