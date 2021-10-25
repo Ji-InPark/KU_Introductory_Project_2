@@ -1,13 +1,16 @@
-package src;
-
 import java.util.ArrayList;
 import java.io.File;
+import java.util.List;
 
-public class OptionType {
-    private FileList fileList;
+public class OptionType implements Option{
+    private ArrayList<File> fileList;
+    private String type;
 
-    public OptionType(FileList fileList){
+    public OptionType(ArrayList<File> fileList, String type){
+        this.type = type;
         this.fileList = fileList;
+
+        checkArg();
     }
 
     /*
@@ -15,28 +18,49 @@ public class OptionType {
         return maxtype(this.file, this.path, this.type);
     }
      */
-    public ArrayList<String> type(String type){
-        if(!type.equals("d") && !type.equals("f")){ // invalid argument
-            return null;
-        }
-        ArrayList<String> tmp = new ArrayList<>();
-        if(type.equals("d")){
-            for(int i = 0; i < this.fileList.getSize(); i++){
-                File f = this.fileList.getFileList().get(i);
+    public ArrayList<File> OptionType(){
+        ArrayList<File> tmp = new ArrayList<>();
+
+        if(type.equals("d")){ // type == "d"
+            for(File f : this.fileList){
                 if(f.isDirectory()){
-                     tmp.add(f.getPath());
+                    tmp.add(f);
                 }
             }
+        }
+        else{ // type == "f"
+            for(File f : this.fileList){
+                if(f.isFile()){
+                    tmp.add(f);
+                }
+            }
+        }
+
+        return tmp;
+    }
+
+    @Override
+    public List<File> analyze() {
+        ArrayList<File> result = OptionType();
+        return result;
+    }
+
+    @Override
+    public void checkArg() throws IllegalArgumentException {
+        if(type.length() != 1){
+            throw new IllegalArgumentException("type must be either d or f");
         }
         else{
-            for(int i = 0; i < this.fileList.getSize(); i++){
-                File f = this.fileList.getFileList().get(i);
-                if(f.isFile()){
-                    tmp.add(f.getPath());
-                }
+            if(!type.equals("d") && !type.equals("f")){
+                throw new IllegalArgumentException("type must be either d or f");
             }
         }
-        return tmp;
+
+    }
+
+    @Override
+    public String getSymbol() {
+        return "-type";
     }
 /*
     public ArrayList<String> maxtype(File file, String path, String type){
