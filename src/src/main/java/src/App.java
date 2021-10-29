@@ -48,6 +48,7 @@ public class App {
             }
             if (splited.peek() == null) {
                 Utils.printResult(allFiles);
+                return;
             }
 
             List<Option> options = new ArrayList<>();
