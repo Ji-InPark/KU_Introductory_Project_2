@@ -88,6 +88,7 @@ public class OptionTime implements Option {
         }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat(template_yyyyMMdd + template_hhmmss);
+        dateFormat.setLenient(false);
 
         try {
             return dateFormat.parse(yyyyMMdd + hhmmss);
