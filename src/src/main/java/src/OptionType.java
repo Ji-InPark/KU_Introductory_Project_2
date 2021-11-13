@@ -5,10 +5,10 @@ import java.io.File;
 import java.util.List;
 
 public class OptionType implements Option{
-    private ArrayList<File> fileList;
+    private List<File> fileList;
     private String type;
 
-    public OptionType(ArrayList<File> fileList, String type){
+    public OptionType(List<File> fileList, String type){
         this.type = type;
         this.fileList = fileList;
 
