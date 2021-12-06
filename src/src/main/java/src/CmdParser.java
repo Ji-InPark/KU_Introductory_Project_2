@@ -43,10 +43,6 @@ public class CmdParser {
             throw new IllegalArgumentException("올바른 커맨드가 아닙니다 (인수가 너무 적습니다)");
         }
 
-        String cmdName = pollUntilNotDelim(splited, delim);
-        if (!cmdName.equals("cfind"))
-            throw new IllegalArgumentException("올바른 커맨드가 아닙니다");
-
         String rootPath = pollUntilNotDelim(splited, delim);
         if (rootPath.equals("--help")) {
             HelpMsg helpMsg = new HelpMsg();
