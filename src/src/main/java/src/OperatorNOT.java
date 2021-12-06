@@ -44,6 +44,6 @@ public class OperatorNOT implements Operator {
 
     @Override
     public int getPriority() {
-        return 2;
+        return 1;
     }
 }

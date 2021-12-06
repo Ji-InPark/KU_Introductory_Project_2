@@ -9,7 +9,7 @@ public class App {
         CmdParser parser= CmdParser.getInstance();
 
         try {
-            String cmd = "\"/Users/namgung-geon/Downloads\" (-maxdepth 100 -or -type f) -and -name *.csv";
+            String cmd = "\".\" -not(-maxdepth 1 -name *.csv) -and -type f";
             CmdExecuter executer=  parser.parse(cmd);
             if(executer!= null) executer.exeucte();
 

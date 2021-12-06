@@ -115,6 +115,10 @@ public class CmdParser {
                     operatorStrings.push(currentOperator);
                 }
                 requireOp= false;
+
+                if(currentOperator.equals("-not")){
+                    requireOp= true;
+                }
             }else if (option == null) {
                 option= pollUntilNotDelim(splited, delim);
                 if(OperatorUtil.getInstance().getOperator(option)!= null){
