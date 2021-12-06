@@ -90,6 +90,6 @@ public class OptionSize implements Option {
 
     @Override
     public String getSymbol() {
-        return "size";
+        return "-size";
     }
 }

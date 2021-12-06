@@ -9,33 +9,10 @@ public class App {
         CmdParser parser= CmdParser.getInstance();
 
         try {
-            String cmd = "\".\" -name Option*";
-            List<Option> options= parser.parse(cmd);
+            String cmd = "\"/Users/namgung-geon/Downloads\" (-maxdepth 100 -or -type f) -and -name *.csv";
+            CmdExecuter executer=  parser.parse(cmd);
+            if(executer!= null) executer.exeucte();
 
-            if(options.isEmpty()){
-                Utils.printResult(parser.allFiles);
-                return;
-            }
-
-            List<File> prevFiles = null;
-            for (Option currentOption : options) {
-                if (prevFiles == null) {
-                    prevFiles = currentOption.analyze();
-                } else {
-                    List<File> currentFiles = currentOption.analyze();
-
-                    Iterator iterator = prevFiles.iterator();
-                    while (iterator.hasNext()) {
-                        File file = (File) iterator.next();
-                        //set and operation
-                        if (!currentFiles.contains(file)) {
-                            iterator.remove();
-                        }
-                    }
-                }
-            }
-
-            Utils.printResult(prevFiles);
         } catch (Exception e) {
             System.out.println("오류: " + e.getMessage());
             e.printStackTrace();

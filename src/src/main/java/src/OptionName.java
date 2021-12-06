@@ -91,6 +91,6 @@ public class OptionName implements Option{
 
     @Override
     public String getSymbol() {
-        return null;
+        return "-name";
     }
 }
