@@ -9,7 +9,7 @@ public class App {
         CmdParser parser= CmdParser.getInstance();
 
         try {
-            String cmd = "cfind /Users/namgung-geon/java_cmd/src/target/classes/src/testdir -name Option*";
+            String cmd = "cfind \".\" -name Option*";
             List<Option> options= parser.parse(cmd);
 
             if(options.isEmpty()){

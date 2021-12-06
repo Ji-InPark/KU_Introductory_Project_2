@@ -55,34 +55,9 @@ public class CmdParser {
 
             return options;
         }
-        int quoteCnt = 0;
-        char quote = 0;
-        if (rootPath.contains("\"")) {
-            quote = '"';
-            quoteCnt++;
-        } else if (rootPath.contains("\'")) {
-            quote = '\'';
-            quoteCnt++;
-        }
-        //find close quote
-        while (!splited.isEmpty() && quoteCnt % 2 != 0) {
-            String current = splited.poll();
-            if(current.equals(delim)){
-                rootPath+= delim;
-                continue;
-            }
-            for (char c : current.toCharArray()) {
-                if (c == quote) {
-                    quoteCnt++;
-                }
-            }
-            rootPath += current;
-        }
+
         //building path is ended
-        if(OsUtil.isMac()){
-            rootPath= rootPath.replaceAll("\'", "");
-            rootPath= rootPath.replaceAll("\"", "");
-        }
+        rootPath= rootPath.replaceAll("\"", "");
 
         File rootFile = new File(rootPath);
         allFiles = new ArrayList<>(Utils.flatFiles(rootFile));
