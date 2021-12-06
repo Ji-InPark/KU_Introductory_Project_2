@@ -104,7 +104,7 @@ public class OptionName implements Option{
             skip = 0;
             while(true){
                 if(skip+string_index >= this.target.length()) {
-                    return 1;
+                    break;
                 }
 
                 if(checkCondition(pattern_index+1, skip+string_index, token_index)==1) {
@@ -128,6 +128,9 @@ public class OptionName implements Option{
             System.out.println("length : " + String.valueOf(length));
             */
 
+            if((string_index+length) > (this.target.length()-1))
+                return 0;
+            
             for(int k=string_index;k<(string_index+length);k++)
             {
                 if(this.target.charAt(k) < start && this.target.charAt(k) > end) {
