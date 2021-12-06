@@ -68,13 +68,13 @@ public class CmdParser {
 
         splited= splitGroupperFromExpr(splited);
 
-        System.out.println("splited: " + splited);
+//        System.out.println("splited: " + splited);
         while (splited.peek() != null) {
-            System.out.println("=========디버그========");
-            System.out.println("current: " + splited.peek());
-            System.out.println("operatorStrings: " + operatorStrings);
-            System.out.println("options: " + options);
-            System.out.println("requireOp: " + requireOp);
+//            System.out.println("=========디버그========");
+//            System.out.println("current: " + splited.peek());
+//            System.out.println("operatorStrings: " + operatorStrings);
+//            System.out.println("options: " + options);
+//            System.out.println("requireOp: " + requireOp);
 
             if(requireOp){
                 //require operator
@@ -157,10 +157,10 @@ public class CmdParser {
             options.add(OperatorUtil.getInstance().getOperator(operatorStrings.pop()));
         }
 
-        System.out.println("OP parsed");
-        for (Option op : options) {
-            System.out.println(op.getSymbol());
-        }
+//        System.out.println("OP parsed");
+//        for (Option op : options) {
+//            System.out.println(op.getSymbol());
+//        }
 
         CmdExecuter executer= new CmdExecuter(allFiles, options);
         return executer;

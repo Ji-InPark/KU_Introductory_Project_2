@@ -17,7 +17,7 @@ public class CmdExecuter {
     public List<File> exeucte() {
         List<File> result = allFiles;
         if (!options.isEmpty()) {
-            System.out.println("end"+ options);
+//            System.out.println("end"+ options);
             Stack<List<File>> values = new Stack<>();
 //            System.out.println("options(ops): "+ options);
             for (int i = 0; i < options.size(); i++) {
@@ -65,7 +65,7 @@ public class CmdExecuter {
                 }
             }
             result = values.pop();
-            System.out.println("end"+ values);
+//            System.out.println("end"+ values);
         }
 
         if (result != null) {
