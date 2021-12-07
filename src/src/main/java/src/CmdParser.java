@@ -36,7 +36,7 @@ public class CmdParser {
             tokenCnt++;
         }
 
-        if (tokenCnt < 3) {
+        if (tokenCnt < 1) {
             throw new IllegalArgumentException("올바른 커맨드가 아닙니다 (인수가 너무 적습니다)");
         }
 
@@ -49,17 +49,38 @@ public class CmdParser {
             return null;
         }
 
+        do{
+            int wrapperCnt= 0;
+            for(int i=0; i< rootPath.length(); i++){
+                if(rootPath.charAt(i) == '\"'){
+                    wrapperCnt++;
+                }
+            }
+
+            if(wrapperCnt< 2){
+                rootPath+= " "+ pollUntilNotDelim(splited, delim);
+            }else if(wrapperCnt== 2){
+                break;
+            }else{
+                throw new IllegalArgumentException("경로 지정 표현식이 올바르지 않습니다");
+            }
+       }while(true);
+
+        if(rootPath.charAt(0)!= '\"' || rootPath.charAt(rootPath.length()-1)!= '\"'){
+            throw new IllegalArgumentException("파일 경로 지정 시 \"로 감싸져야만 합니다");
+        }
+
         //building path is ended
         rootPath = rootPath.replaceAll("\"", "");
 
         File rootFile = new File(rootPath);
-        allFiles = new ArrayList<>(Utils.flatFiles(rootFile));
         if (!rootFile.exists()) {
             throw new IOException("존재하지 않는 경로입니다: " + rootPath);
         }
         if (!rootFile.isDirectory()) {
             throw new IllegalArgumentException("루트 파일 경로에 해당하는 파일은 디렉토리여야 합니다");
         }
+        allFiles = new ArrayList<>(Utils.flatFiles(rootFile));
 
         boolean requireOp= false;
         String option = null;
@@ -68,6 +89,9 @@ public class CmdParser {
 
         splited= splitGroupperFromExpr(splited);
 
+        boolean not= false;
+        int groupOpenCnt= 0;
+
 //        System.out.println("splited: " + splited);
         while (splited.peek() != null) {
 //            System.out.println("=========디버그========");
@@ -75,15 +99,34 @@ public class CmdParser {
 //            System.out.println("operatorStrings: " + operatorStrings);
 //            System.out.println("options: " + options);
 //            System.out.println("requireOp: " + requireOp);
+//            System.out.println("mode NOT: " + not);
+//            System.out.println("groupOpenCnt: " + groupOpenCnt);
 
             if(requireOp){
                 //require operator
                 String currentOperator = pollUntilNotDelim(splited, delim);
+                if(currentOperator.equals("-not")){
+                    not= true;
+                    String nextOp= pollUntilNotDelim(splited, delim);
+                    if(OperatorUtil.getInstance().getOperator(nextOp)== null){
+                        requireOp= false;
+                    }
+                    splited.addFirst(nextOp);
+                    continue;
+                }
                 boolean useDefaultOperator = OperatorUtil.getInstance().getOperator(currentOperator) == null;
                 if (useDefaultOperator) {
                     //현재 토큰값이 operator가 아닌 경우 연산자를 and로 취급
                     splited.addFirst(currentOperator);
                     currentOperator = "-and";
+                }
+
+                if(not){
+                    if(currentOperator.equals("(")){
+                        groupOpenCnt++;
+                    }else if(currentOperator.equals(")")){
+                        groupOpenCnt--;
+                    }
                 }
 
                 while (!operatorStrings.isEmpty()) {
@@ -115,10 +158,6 @@ public class CmdParser {
                     operatorStrings.push(currentOperator);
                 }
                 requireOp= false;
-
-                if(currentOperator.equals("-not")){
-                    requireOp= true;
-                }
             }else if (option == null) {
                 option= pollUntilNotDelim(splited, delim);
                 if(OperatorUtil.getInstance().getOperator(option)!= null){
@@ -133,7 +172,15 @@ public class CmdParser {
                         options.add(new OptionSize(allFiles, arg));
                         break;
                     case "-name":
-                        options.add(new OptionName(allFiles, arg));
+                        while (arg.charAt(0) != '\"' || arg.charAt(arg.length() - 1) != '\"') {
+                            String nextToken= pollUntilNotDelim(splited, delim);
+                            if(nextToken== null){
+                                throw new IllegalArgumentException("-name 옵션의 값은 큰따옴표로 감싸져 있어야만 합니다");
+                            }
+                            arg+= " "+ nextToken;
+                        }
+
+                        options.add(new OptionName(allFiles, arg.substring(1, arg.length()-1)));
                         break;
                     case "-type":
                         options.add(new OptionType(allFiles, arg));
@@ -151,11 +198,25 @@ public class CmdParser {
                 }
                 option = null;
                 requireOp= true;
+
+                if(not && groupOpenCnt== 0){
+                    //invert
+                    options.add(new OperatorNOT());
+                    not= false;
+                }
             }
         }
         while (!operatorStrings.isEmpty()) {
-            options.add(OperatorUtil.getInstance().getOperator(operatorStrings.pop()));
+            Operator op= OperatorUtil.getInstance().getOperator(operatorStrings.pop());
+            if(!op.getSymbol().equals("("))
+                options.add(op);
         }
+        if(not && groupOpenCnt== 0){
+            //invert
+            options.add(new OperatorNOT());
+            not= false;
+        }
+
 
 //        System.out.println("OP parsed");
 //        for (Option op : options) {
