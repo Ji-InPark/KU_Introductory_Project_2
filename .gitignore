@@ -1,3 +1,7 @@
 .idea
 src/test
 *.class
+
+testcase/
+
+src/classes/artifacts/src_jar/
