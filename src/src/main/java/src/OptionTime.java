@@ -38,15 +38,6 @@ public class OptionTime implements Option {
         checkArg();
     }
 
-    public OptionTime( String arg,  File rootDir) {
-        this(arg, Utils.flatFiles(rootDir));
-    }
-
-    public OptionTime( String arg,  FileList fileList) {
-        this(arg, fileList.getTargetFileList());
-        this._fileList = fileList;
-    }
-
 
     @Override
     public List<File> analyze() {
