@@ -98,29 +98,31 @@ public class OptionName implements Option{
         if(pattern_index==this.option.length() && string_index==this.target.length())
             return 1;
 
-        if(this.option.charAt(pattern_index)=='*')
-        {
-            //System.out.println("regex whilecard");
-            skip = 0;
-            while(true){
-                if(skip+string_index >= this.target.length()) {
-                    break;
-                }
+        if(pattern_index< this.option.length()){
 
-                if(checkCondition(pattern_index+1, skip+string_index, token_index)==1) {
-                    return 1;
+            if(this.option.charAt(pattern_index)=='*')
+            {
+                //System.out.println("regex whilecard");
+                skip = 0;
+                while(true){
+                    if(skip+string_index >= this.target.length()) {
+                        break;
+                    }
+
+                    if(checkCondition(pattern_index+1, skip+string_index, token_index)==1) {
+                        return 1;
+                    }
+                    skip+=1;
                 }
-                skip+=1;
             }
-        }
 
-        if(this.option.charAt(pattern_index)=='^')
-        {
-            String token = this.tokenList.get(token_index).replace("[", "").replace("]", "");
-            int start = (int)token.split(",")[0].charAt(0);
-            int end = (int)token.split(",")[1].charAt(0);
-            int length = Character.getNumericValue(token.split(",")[2].charAt(0));
-            token_index++;
+            if(this.option.charAt(pattern_index)=='^')
+            {
+                String token = this.tokenList.get(token_index).replace("[", "").replace("]", "");
+                int start = (int)token.split(",")[0].charAt(0);
+                int end = (int)token.split(",")[1].charAt(0);
+                int length = Character.getNumericValue(token.split(",")[2].charAt(0));
+                token_index++;
 
             /*System.out.println("token : " + token);
             System.out.println("start : " + String.valueOf(start));
@@ -128,18 +130,19 @@ public class OptionName implements Option{
             System.out.println("length : " + String.valueOf(length));
             */
 
-            if((string_index+length) > (this.target.length()-1))
-                return 0;
-            
-            for(int k=string_index;k<(string_index+length);k++)
-            {
-                if(this.target.charAt(k) < start && this.target.charAt(k) > end) {
+                if((string_index+length) > (this.target.length()-1))
                     return 0;
-                }
-            }
 
-            if(checkCondition(pattern_index+1, (string_index+length), token_index)==1) {
-                return 1;
+                for(int k=string_index;k<(string_index+length);k++)
+                {
+                    if(this.target.charAt(k) < start && this.target.charAt(k) > end) {
+                        return 0;
+                    }
+                }
+
+                if(checkCondition(pattern_index+1, (string_index+length), token_index)==1) {
+                    return 1;
+                }
             }
         }
         return 0;
