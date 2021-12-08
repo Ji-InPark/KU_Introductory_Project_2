@@ -21,23 +21,17 @@ public class CmdParser {
 
     public List<File> allFiles = null;
 
-    public CmdExecuter parse(String cmd) throws IllegalArgumentException, IOException {
+    public CmdExecuter parse(String[] args) throws IllegalArgumentException, IOException {
+        if(args.length< 1){
+            throw new IllegalArgumentException("인자 갯수가 너무 적습니다");
+        }
+
         List<Option> options = new ArrayList<>();
         String delim = " ";
 
-        StringTokenizer cmdTokenizer = new StringTokenizer(cmd, delim, true);
-
-        int tokenCnt = 0;
-        LinkedList<String> splited = new LinkedList<>();
-        while (cmdTokenizer.hasMoreTokens()) {
-            String currentToken = cmdTokenizer.nextToken();
-            splited.offer(currentToken);
-
-            tokenCnt++;
-        }
-
-        if (tokenCnt < 1) {
-            throw new IllegalArgumentException("올바른 커맨드가 아닙니다 (인수가 너무 적습니다)");
+        LinkedList<String> splited= new LinkedList<>();
+        for(String arg: args){
+            splited.offer(arg);
         }
 
         String rootPath = pollUntilNotDelim(splited, delim);
@@ -48,30 +42,6 @@ public class CmdParser {
 
             return null;
         }
-
-        do{
-            int wrapperCnt= 0;
-            for(int i=0; i< rootPath.length(); i++){
-                if(rootPath.charAt(i) == '\"'){
-                    wrapperCnt++;
-                }
-            }
-
-            if(wrapperCnt< 2){
-                rootPath+= " "+ pollUntilNotDelim(splited, delim);
-            }else if(wrapperCnt== 2){
-                break;
-            }else{
-                throw new IllegalArgumentException("경로 지정 표현식이 올바르지 않습니다");
-            }
-        }while(!splited.isEmpty());
-
-        if(rootPath.charAt(0)!= '\"' || rootPath.charAt(rootPath.length()-1)!= '\"'){
-            throw new IllegalArgumentException("파일 경로 지정 시 \"로 감싸져야만 합니다");
-        }
-
-        //building path is ended
-        rootPath = rootPath.replaceAll("\"", "");
 
         File rootFile = new File(rootPath);
         if (!rootFile.exists()) {
@@ -172,15 +142,7 @@ public class CmdParser {
                         options.add(new OptionSize(allFiles, arg));
                         break;
                     case "-name":
-                        while (arg.charAt(0) != '\"' || arg.charAt(arg.length() - 1) != '\"') {
-                            String nextToken= pollUntilNotDelim(splited, delim);
-                            if(nextToken== null){
-                                throw new IllegalArgumentException("-name 옵션의 값은 큰따옴표로 감싸져 있어야만 합니다");
-                            }
-                            arg+= " "+ nextToken;
-                        }
-
-                        options.add(new OptionName(allFiles, arg.substring(1, arg.length()-1)));
+                        options.add(new OptionName(allFiles, arg));
                         break;
                     case "-type":
                         options.add(new OptionType(allFiles, arg));

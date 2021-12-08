@@ -55,8 +55,8 @@ public class AppTest {
         CmdParser parser= CmdParser.getInstance();
 
         try {
-            CmdExecuter executer=  parser.parse(cmd);
-            if(executer!= null) executer.exeucte();
+//            CmdExecuter executer=  parser.parse(cmd);
+//            if(executer!= null) executer.exeucte();
 
         } catch (Exception e) {
             System.out.println("오류: " + e.getMessage());
