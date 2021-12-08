@@ -21,11 +21,13 @@ public class CmdParser {
 
     public List<File> allFiles = null;
 
-    public CmdExecuter parse(String cmd) throws IllegalArgumentException, IOException {
+    public CmdExecuter parse(String[] cmd) throws IllegalArgumentException, IOException {
         List<Option> options = new ArrayList<>();
         String delim = " ";
+        int tokenCnt = 0;
+        LinkedList<String> splited = new LinkedList<>();
 
-        StringTokenizer cmdTokenizer = new StringTokenizer(cmd, delim, true);
+        /*StringTokenizer cmdTokenizer = new StringTokenizer(cmd, delim, true);
 
         int tokenCnt = 0;
         LinkedList<String> splited = new LinkedList<>();
@@ -34,7 +36,14 @@ public class CmdParser {
             splited.offer(currentToken);
 
             tokenCnt++;
+        }*/
+
+        for(int token_index=0;token_index<cmd.length;token_index++)
+        {
+            System.out.printf("%d번째 arg : %s\n", token_index, cmd[token_index]);
+            splited.offer(cmd[token_index]);
         }
+        tokenCnt = cmd.length;
 
         if (tokenCnt < 1) {
             throw new IllegalArgumentException("올바른 커맨드가 아닙니다 (인수가 너무 적습니다)");
@@ -66,12 +75,12 @@ public class CmdParser {
             }
         }while(!splited.isEmpty());
 
-        if(rootPath.charAt(0)!= '\"' || rootPath.charAt(rootPath.length()-1)!= '\"'){
+        /*if(rootPath.charAt(0)!= '\"' || rootPath.charAt(rootPath.length()-1)!= '\"'){
             throw new IllegalArgumentException("파일 경로 지정 시 \"로 감싸져야만 합니다");
-        }
+        }*/
 
         //building path is ended
-        rootPath = rootPath.replaceAll("\"", "");
+        rootPath = cmd[0];//rootPath.replaceAll("\"", "");
 
         File rootFile = new File(rootPath);
         if (!rootFile.exists()) {

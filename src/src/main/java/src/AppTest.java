@@ -52,7 +52,7 @@ public class AppTest {
     }
 
     private static void exec(String cmd){
-        CmdParser parser= CmdParser.getInstance();
+        /*CmdParser parser= CmdParser.getInstance();
 
         try {
             CmdExecuter executer=  parser.parse(cmd);
@@ -62,7 +62,7 @@ public class AppTest {
             System.out.println("오류: " + e.getMessage());
             e.printStackTrace();
         }
-        System.out.println("\n\n");
+        System.out.println("\n\n");*/
     }
     private static String createCmd(String optionExpr){
         return String.format("\"%s\" %s", tcPath, optionExpr);

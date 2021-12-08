@@ -9,10 +9,10 @@ public class App {
         CmdParser parser= CmdParser.getInstance();
 
         try {
-            String cmd = "\"/Users/namgung-geon/java_cmd/testcase/\" -not (-size +1k -and -type d)";
-            cmd= argToCmd(args);
+            //String cmd = "\"/Users/namgung-geon/java_cmd/testcase/\" -not (-size +1k -and -type d)";
+            //cmd= argToCmd(args);
 
-            CmdExecuter executer=  parser.parse(cmd);
+            CmdExecuter executer=  parser.parse(args);
             if(executer!= null) executer.exeucte();
 
         } catch (Exception e) {
