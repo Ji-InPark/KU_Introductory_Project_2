@@ -16,6 +16,9 @@ public class OptionName implements Option{
     public OptionName(List<File> fileList, String arg)
     {
         this.option=arg;
+        System.out.println("option is : " + option);
+        this.option = this.option.replace("\\*", "*").replace("\\?", "?");
+        //System.out.println("option is : " + option);
         this.fileList=fileList;
         this.tokenList = new ArrayList<String>();
         this.replaceToken();
@@ -104,6 +107,8 @@ public class OptionName implements Option{
         if(pattern_index==this.option.length() && string_index==this.target.length())
             return 1;
 
+        if(pattern_index==this.option.length() && string_index!=this.target.length())
+            return 0;
         if(this.option.charAt(pattern_index)=='*')
         {
             //System.out.println("regex whilecard");
