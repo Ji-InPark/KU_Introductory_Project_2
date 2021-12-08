@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class AppTest {
-    private static String tcPath= "/Users/namgung-geon/java_cmd/testcase/";
+    private static String tcPath= "C:\\Users\\windowhan\\Desktop\\test-konkuk\\testcase\\";
     public static void main(String[] args){
         if(args.length> 0){
             tcPath= args[0];

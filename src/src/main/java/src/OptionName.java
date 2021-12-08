@@ -76,7 +76,7 @@ public class OptionName implements Option{
             System.out.println(this.option);
             System.out.println(string_index);
             System.out.println(this.target.length());*/
-            if(string_index==this.target.length())
+            if((string_index+1)==this.target.length())
                 return 1;
             else
                 return 0;
@@ -91,58 +91,64 @@ public class OptionName implements Option{
         while(string_index<(this.target.length()) && pattern_index<(this.option.length()) && (this.option.charAt(pattern_index)=='?' || this.target.charAt(string_index)==this.option.charAt(pattern_index))) {
             //System.out.println("Compare 1 : " + this.target.charAt(string_index));
             //System.out.println("Compare 2 : " + this.option.charAt(pattern_index));
+            //System.out.println(string_index);
+            //System.out.println(pattern_index);
             pattern_index++;
             string_index++;
+        }
+
+        if((pattern_index+1)==this.option.length() && ((this.target.length() < this.option.length() && (this.option.substring(this.target.length()).equals("*"))))) {
+            return 1;
         }
 
         if(pattern_index==this.option.length() && string_index==this.target.length())
             return 1;
 
-        if(pattern_index< this.option.length()){
+        if(this.option.charAt(pattern_index)=='*')
+        {
+            //System.out.println("regex whilecard");
+            skip = 0;
+            while(true){
+                if(skip+string_index >= this.target.length()) {
+                    break;
+                }
 
-            if(this.option.charAt(pattern_index)=='*')
+                if(checkCondition(pattern_index+1, skip+string_index, token_index)==1) {
+                    return 1;
+                }
+                skip+=1;
+            }
+        }
+
+        if(this.option.charAt(pattern_index)=='^')
+        {
+            String token = this.tokenList.get(token_index).replace("[", "").replace("]", "");
+            int start = 0;
+            int end = 0;
+            try {
+                start = (int) token.split(",")[0].charAt(0);
+                end = (int) token.split(",")[1].charAt(0);
+            }
+            catch(Exception ex)
             {
-                //System.out.println("regex whilecard");
-                skip = 0;
-                while(true){
-                    if(skip+string_index >= this.target.length()) {
-                        break;
-                    }
+                throw new IllegalArgumentException("올바른 [] 패턴이 아닙니다.");
+            }
+            int length = Character.getNumericValue(token.split(",")[2].charAt(0));
+            token_index++;
 
-                    if(checkCondition(pattern_index+1, skip+string_index, token_index)==1) {
-                        return 1;
-                    }
-                    skip+=1;
+            if((string_index+length) > (this.target.length()-1))
+                return 0;
+
+            for(int k=string_index;k<(string_index+length);k++)
+            {
+                if(this.target.charAt(k) < start && this.target.charAt(k) > end) {
+                    System.out.println("범위 미포함");
+                    return 0;
                 }
             }
 
-            if(this.option.charAt(pattern_index)=='^')
-            {
-                String token = this.tokenList.get(token_index).replace("[", "").replace("]", "");
-                int start = (int)token.split(",")[0].charAt(0);
-                int end = (int)token.split(",")[1].charAt(0);
-                int length = Character.getNumericValue(token.split(",")[2].charAt(0));
-                token_index++;
-
-            /*System.out.println("token : " + token);
-            System.out.println("start : " + String.valueOf(start));
-            System.out.println("end : " + String.valueOf(end));
-            System.out.println("length : " + String.valueOf(length));
-            */
-
-                if((string_index+length) > (this.target.length()-1))
-                    return 0;
-
-                for(int k=string_index;k<(string_index+length);k++)
-                {
-                    if(this.target.charAt(k) < start && this.target.charAt(k) > end) {
-                        return 0;
-                    }
-                }
-
-                if(checkCondition(pattern_index+1, (string_index+length), token_index)==1) {
-                    return 1;
-                }
+            if(checkCondition(pattern_index+1, (string_index+length), token_index)==1) {
+                return 1;
             }
         }
         return 0;
@@ -181,6 +187,6 @@ public class OptionName implements Option{
 
     @Override
     public String getSymbol() {
-        return "-name";
+        return null;
     }
 }
