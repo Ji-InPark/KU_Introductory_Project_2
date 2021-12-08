@@ -195,6 +195,8 @@ public class CmdParser {
                             throw new IllegalArgumentException("--maxdepth의 인자는 0이상의 정수로 주어져야 합니다");
                         }
                         break;
+                    default:
+                        throw new IllegalArgumentException("올바르지 않은 옵션입니다");
                 }
                 option = null;
                 requireOp= true;
@@ -215,6 +217,10 @@ public class CmdParser {
             //invert
             options.add(new OperatorNOT());
             not= false;
+        }
+
+        if(option!= null){
+            throw new IllegalArgumentException("문법 오류: 값이 주어지지 않은 옵션이 있습니다.");
         }
 
 
