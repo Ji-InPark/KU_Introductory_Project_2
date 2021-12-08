@@ -76,7 +76,7 @@ public class OptionName implements Option{
             System.out.println(this.option);
             System.out.println(string_index);
             System.out.println(this.target.length());*/
-            if(string_index==this.target.length())
+            if((string_index+1)==this.target.length())
                 return 1;
             else
                 return 0;
@@ -91,8 +91,14 @@ public class OptionName implements Option{
         while(string_index<(this.target.length()) && pattern_index<(this.option.length()) && (this.option.charAt(pattern_index)=='?' || this.target.charAt(string_index)==this.option.charAt(pattern_index))) {
             //System.out.println("Compare 1 : " + this.target.charAt(string_index));
             //System.out.println("Compare 2 : " + this.option.charAt(pattern_index));
+            //System.out.println(string_index);
+            //System.out.println(pattern_index);
             pattern_index++;
             string_index++;
+        }
+
+        if((pattern_index+1)==this.option.length() && ((this.target.length() < this.option.length() && (this.option.substring(this.target.length()).equals("*"))))) {
+            return 1;
         }
 
         if(pattern_index==this.option.length() && string_index==this.target.length())
@@ -130,7 +136,7 @@ public class OptionName implements Option{
 
             if((string_index+length) > (this.target.length()-1))
                 return 0;
-            
+
             for(int k=string_index;k<(string_index+length);k++)
             {
                 if(this.target.charAt(k) < start && this.target.charAt(k) > end) {
@@ -162,8 +168,8 @@ public class OptionName implements Option{
                     dp[i][j] = -1;
                 }
             }
-            //System.out.println("Target String : " + this.target);
-            //System.out.println("Pattern String : " + this.option);
+            System.out.println("Target String : " + this.target);
+            System.out.println("Pattern String : " + this.option);
             if (checkCondition(0,0, 0)==1) {
                 results.add(this.fileList.get(fileIndex));
             }
