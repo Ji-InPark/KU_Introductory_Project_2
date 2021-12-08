@@ -64,7 +64,7 @@ public class CmdParser {
             }else{
                 throw new IllegalArgumentException("경로 지정 표현식이 올바르지 않습니다");
             }
-       }while(true);
+        }while(!splited.isEmpty());
 
         if(rootPath.charAt(0)!= '\"' || rootPath.charAt(rootPath.length()-1)!= '\"'){
             throw new IllegalArgumentException("파일 경로 지정 시 \"로 감싸져야만 합니다");
