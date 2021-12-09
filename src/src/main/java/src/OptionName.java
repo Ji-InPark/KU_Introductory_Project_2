@@ -92,10 +92,10 @@ public class OptionName implements Option{
         }
 
         while(string_index<(this.target.length()) && pattern_index<(this.option.length()) && (this.option.charAt(pattern_index)=='?' || this.target.charAt(string_index)==this.option.charAt(pattern_index))) {
-            //System.out.println("Compare 1 : " + this.target.charAt(string_index));
-            //System.out.println("Compare 2 : " + this.option.charAt(pattern_index));
-            //System.out.println(string_index);
-            //System.out.println(pattern_index);
+            System.out.println("Compare 1 : " + this.target.charAt(string_index));
+            System.out.println("Compare 2 : " + this.option.charAt(pattern_index));
+            System.out.println(string_index);
+            System.out.println(pattern_index);
             pattern_index++;
             string_index++;
         }
@@ -141,18 +141,21 @@ public class OptionName implements Option{
             int length = Character.getNumericValue(token.split(",")[2].charAt(0));
             token_index++;
 
-            if((string_index+length) > (this.target.length()-1))
+            if((string_index+length-1) > (this.target.length()-1))
                 return 0;
 
-            for(int k=string_index;k<(string_index+length);k++)
+            for(int k=string_index;k<(string_index+length-1);k++)
             {
+                //System.out.println("target is : " + this.target + " | " + k);
                 if(this.target.charAt(k) < start && this.target.charAt(k) > end) {
                     System.out.println("범위 미포함");
                     return 0;
                 }
             }
 
-            if(checkCondition(pattern_index+1, (string_index+length), token_index)==1) {
+
+
+            if(checkCondition(pattern_index+1, (string_index+length-1), token_index)==1) {
                 return 1;
             }
         }
