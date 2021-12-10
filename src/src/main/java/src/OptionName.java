@@ -74,12 +74,12 @@ public class OptionName implements Option{
     {
         if(this.option.length() == pattern_index)
         {
-            /*System.out.println("coverage 2");
+            System.out.println("coverage 2");
             System.out.println(this.target);
             System.out.println(this.option);
             System.out.println(string_index);
-            System.out.println(this.target.length());*/
-            if((string_index+1)==this.target.length())
+            System.out.println(this.target.length());
+            if((string_index)>(this.target.length()-2))
                 return 1;
             else
                 return 0;
@@ -154,8 +154,13 @@ public class OptionName implements Option{
             }
 
 
-
-            if(checkCondition(pattern_index+1, (string_index+length-1), token_index)==1) {
+            System.out.println("next index : " + (string_index+length));
+            if(this.option.length()==(pattern_index+1))
+            {
+                if((string_index+length+1)==this.target.length())
+                    return 0;
+            }
+            if(checkCondition(pattern_index+1, (string_index+length), token_index)==1) {
                 return 1;
             }
         }
@@ -179,8 +184,8 @@ public class OptionName implements Option{
                     dp[i][j] = -1;
                 }
             }
-            //System.out.println("Target String : " + this.target);
-            //System.out.println("Pattern String : " + this.option);
+            System.out.println("Target String : " + this.target);
+            System.out.println("Pattern String : " + this.option);
             if (checkCondition(0,0, 0)==1) {
                 results.add(this.fileList.get(fileIndex));
             }
